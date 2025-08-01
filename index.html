@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skillneast Verification</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(90deg, #8A2BE2, #4A00E0);
+            --secondary-gradient: linear-gradient(90deg, #00C6FB, #005BEA);
+            --bg-color: #0a0a14;
+            --card-bg-color: rgba(22, 22, 36, 0.9);
+            --text-color: #f0f0f0;
+            --text-muted-color: #a0a0b0;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --success-color: #2ecc71;
+            --error-color: #e74c3c;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg-color) radial-gradient(circle at 100% 0%, rgba(138, 43, 226, 0.15) 0%, rgba(10, 10, 20, 0) 40%);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .access-card {
+            background: var(--card-bg-color);
+            padding: 35px;
+            border-radius: 24px;
+            width: 100%;
+            max-width: 380px;
+            text-align: center;
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(15px);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.6);
+            animation: fadeIn 1s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card-header { margin-bottom: 30px; }
+        .title-group { display: flex; flex-direction: column; align-items: center; margin-bottom: 8px; }
+        .title-skillneast { font-size: 28px; font-weight: 700; background: var(--secondary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .title-access { font-size: 32px; font-weight: 700; background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1; }
+        .card-header p { font-size: 14px; color: var(--text-muted-color); margin-top: 15px; }
+        
+        .input-group { position: relative; margin-bottom: 10px; }
+        .input-group i { position: absolute; left: 20px; top: 50%; transform: translateY(-50%); color: var(--text-muted-color); }
+        #tokenInput { width: 100%; padding: 15px 15px 15px 50px; border-radius: 12px; border: 1px solid var(--border-color); background-color: var(--bg-color); color: var(--text-color); font-size: 16px; transition: all 0.3s ease; }
+        #tokenInput:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 15px rgba(138, 43, 226, 0.3); }
+        .char-counter { text-align: right; font-size: 12px; color: var(--text-muted-color); margin-bottom: 20px; height: 15px; }
+
+        .btn {
+            width: 100%; padding: 15px; border: none; border-radius: 12px; font-size: 16px; font-weight: 600; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 10px; text-decoration: none;
+            position: relative; overflow: hidden; transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .btn::before { content: ''; position: absolute; top: 0; left: -100%; width: 75%; height: 100%; background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.4), transparent); transition: left 0.7s ease-in-out; }
+        .btn:hover::before { left: 120%; }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 5px 25px rgba(0, 0, 0, 0.4); }
+        .btn-primary { background: var(--primary-gradient); color: white; margin-bottom: 15px; }
+        .btn-secondary { background-color: transparent; color: var(--text-color); border: 1px solid var(--secondary-gradient); }
+        #message { margin-top: 20px; font-weight: 500; min-height: 20px; }
+        .success { color: var(--success-color); }
+        .error { color: var(--error-color); }
+    </style>
+</head>
+<body>
+    <div class="access-card">
+        <div id="auth-section">
+            <div class="card-header">
+                <div class="title-group">
+                    <span class="title-skillneast">Skillneast</span>
+                    <span class="title-access">Access</span>
+                </div>
+                <p>Enter your Token to unlock exclusive access.</p>
+            </div>
+            <div class="input-group">
+                <i class="fa-solid fa-key"></i>
+                <input type="text" id="tokenInput" placeholder="Your Token here">
+            </div>
+            <p class="char-counter"><span id="charCount">0</span> characters</p>
+            <button class="btn btn-primary" id="verifyBtn" onclick="verifyToken()">
+                <span class="btn-text"><i class="fa-solid fa-shield-check"></i> Verify Token</span>
+            </button>
+            <a href="https://t.me/Skillneastverifybot?start=true" target="_blank" class="btn btn-secondary">
+                <i class="fa-solid fa-robot"></i> Start Bot & Get Token
+            </a>
+            <p id="message"></p>
+        </div>
+        <div id="loading-section" style="display: none;">
+            <i class="fa-solid fa-spinner fa-spin" style="font-size: 40px; color: var(--secondary-gradient);"></i>
+            <p style="margin-top: 20px;">Checking your access status...</p>
+        </div>
+    </div>
+    
+    <!-- Firebase SDK Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+    <script>
+        // --- YAHAN APNI FIREBASE CONFIGURATION DAALEIN ---
+        const firebaseConfig = {
+            apiKey: "AIzaSyChwpbFb6M4HtG6zwjg0AXh7Lz9KjnrGZk",
+            authDomain: "adminneast.firebaseapp.com",
+            databaseURL: "https://adminneast-default-rtdb.firebaseio.com",
+            projectId: "adminneast",
+            storageBucket: "adminneast.appspot.com",
+            messagingSenderId: "883877553418",
+            appId: "1:883877553418:web:84ce8200f4b471bfffc6f3"
+        };
+
+        // --- YAHAN APNI MAIN WEBSITE KA URL DAALEIN ---
+        const REDIRECT_URL = "https://skillneast.github.io/Skillneastverify/";
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        // --- Main JavaScript Logic ---
+        const tokenInput = document.getElementById('tokenInput');
+        const charCount = document.getElementById('charCount');
+        const messageEl = document.getElementById('message');
+        const verifyBtn = document.getElementById('verifyBtn');
+        const btnText = verifyBtn.querySelector('.btn-text');
+        const authSection = document.getElementById('auth-section');
+        const loadingSection = document.getElementById('loading-section');
+
+        // --- YEH NAYA CODE HAI (AUTO-REDIRECT KE LIYE) ---
+        window.onload = function() {
+            authSection.style.display = 'none';
+            loadingSection.style.display = 'block';
+
+            // Check karo ki user pehle se verified hai ya nahi
+            if (localStorage.getItem('skillneast_verified') === 'true') {
+                // Agar hai, to seedhe redirect kar do
+                window.location.href = REDIRECT_URL;
+            } else {
+                // Agar nahi, to login form dikhao
+                loadingSection.style.display = 'none';
+                authSection.style.display = 'block';
+            }
+        };
+
+        tokenInput.addEventListener('input', () => { charCount.textContent = tokenInput.value.length; });
+
+        async function verifyToken() {
+            const token = tokenInput.value.trim();
+            messageEl.textContent = '';
+            messageEl.className = '';
+            if (!token) {
+                messageEl.textContent = 'Please enter a token first.';
+                messageEl.className = 'error';
+                return;
+            }
+
+            verifyBtn.disabled = true;
+            btnText.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Verifying...';
+
+            try {
+                const usersRef = database.ref('users');
+                const snapshot = await usersRef.orderByChild('token').equalTo(token).once('value');
+
+                if (!snapshot.exists()) {
+                    throw new Error("Invalid Token. Please get a new one from the bot.");
+                }
+
+                const userId = Object.keys(snapshot.val())[0];
+                const userData = snapshot.val()[userId];
+                const now = Math.floor(Date.now() / 1000);
+
+                if (now > userData.expiry_timestamp) {
+                    throw new Error("Token has expired. Please get a new one.");
+                }
+                
+                if (userData.used) {
+                    throw new Error("This token has already been used.");
+                }
+                
+                await database.ref(`users/${userId}`).update({ used: true });
+
+                // --- SUCCESS ---
+                messageEl.textContent = 'Verification Successful! Redirecting...';
+                messageEl.className = 'success';
+                
+                // User ko "remember" karne ke liye localStorage mein set karo
+                localStorage.setItem('skillneast_verified', 'true');
+                
+                setTimeout(() => {
+                    window.location.href = REDIRECT_URL;
+                }, 1500); // 1.5 second baad redirect
+
+            } catch (error) {
+                messageEl.textContent = `Error: ${error.message}`;
+                messageEl.className = 'error';
+                verifyBtn.disabled = false;
+                btnText.innerHTML = '<i class="fa-solid fa-shield-check"></i> Verify Token';
+            }
+        }
+    </script>
+</body>
+</html>
