@@ -12,140 +12,99 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
+        /* === AAPKA POORA CSS BILKUL SAME RAHEGA (Sirf loader ke liye chhota sa badlaav) === */
         :root {
-            --bg-color: #0a0a14;
-            --card-bg-color: rgba(22, 22, 36, 0.8);
-            --border-color: rgba(255, 255, 255, 0.1);
-            --text-primary: #f0f0f0;
-            --text-secondary: #a0a0b0;
-            --gradient-start: #8A2BE2;
-            --gradient-end: #00C6FB;
-            --success-bg: rgba(34, 197, 94, 0.1);
-            --success-text: #22c55e;
-            --error-bg: rgba(239, 68, 68, 0.1);
+            --bg-color: #0a0a14; --card-bg-color: rgba(22, 22, 36, 0.8); --border-color: rgba(255, 255, 255, 0.1);
+            --text-primary: #f0f0f0; --text-secondary: #a0a0b0; --gradient-start: #8A2BE2; --gradient-end: #00C6FB;
+            --success-bg: rgba(34, 197, 94, 0.1); --success-text: #22c55e; --error-bg: rgba(239, 68, 68, 0.1);
             --error-text: #ef4444;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
         body {
-            font-family: 'Poppins', sans-serif;
-            /* === NAYA PREMIUM BACKGROUND === */
-            background: var(--bg-color);
-            background-image: 
-                radial-gradient(circle at 100% 0%, rgba(138, 43, 226, 0.15) 0%, transparent 40%),
-                radial-gradient(circle at 0% 100%, rgba(0, 198, 251, 0.15) 0%, transparent 40%);
-            background-attachment: fixed;
-            color: var(--text-primary);
-            overflow-x: hidden;
+            font-family: 'Poppins', sans-serif; background: var(--bg-color);
+            background-image: radial-gradient(circle at 100% 0%, rgba(138, 43, 226, 0.15) 0%, transparent 40%),
+                              radial-gradient(circle at 0% 100%, rgba(0, 198, 251, 0.15) 0%, transparent 40%);
+            background-attachment: fixed; color: var(--text-primary); overflow-x: hidden;
         }
 
-        .page-section {
-            display: flex; justify-content: center; align-items: center;
-            min-height: 100vh; padding: 40px 20px; position: relative;
+        /* NAYA LOADER STYLE */
+        .loader-container {
+            display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999;
+            background-color: var(--bg-color); /* Poori screen ko cover karega */
+            transition: opacity 0.5s ease-out;
         }
+        .loader-container.hidden-loader {
+            opacity: 0; pointer-events: none; /* Loader ko hide karne ke liye */
+        }
+        .loader-icon { font-size: 40px; color: var(--gradient-end); animation: spin 1.5s linear infinite; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        .loader-container p { margin-top: 20px; font-size: 18px; font-weight: 500; }
         
-        /* --- SCROLL ANIMATION --- */
+        /* Baaki ka saara CSS bilkul same rahega */
+        .page-section { display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 40px 20px; position: relative; }
         .hidden { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
         .visible { opacity: 1; transform: translateY(0); }
-        
-        /* --- AUTHENTICATION CARD --- */
-        .auth-container {
-            width: 100%; max-width: 420px; background-color: var(--card-bg-color);
-            padding: 40px; border-radius: 24px; border: 1px solid var(--border-color);
-            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.6); text-align: center;
-            backdrop-filter: blur(15px);
-        }
+        .auth-container { width: 100%; max-width: 420px; background-color: var(--card-bg-color); padding: 40px; border-radius: 24px;
+            border: 1px solid var(--border-color); box-shadow: 0 15px 50px rgba(0, 0, 0, 0.6); text-align: center; backdrop-filter: blur(15px); }
         .header { margin-bottom: 30px; }
-        .header .title {
-            font-size: 36px; font-weight: 700;
-            background-image: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            margin-bottom: 10px;
-        }
+        .header .title { font-size: 36px; font-weight: 700; background-image: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 10px; }
         .header p { color: var(--text-secondary); font-size: 16px; }
-        
         .input-group { position: relative; margin-bottom: 10px; }
         .input-group .icon { position: absolute; left: 20px; top: 50%; transform: translateY(-50%); color: var(--text-secondary); }
-        #tokenInput {
-            width: 100%; padding: 18px 55px 18px 55px; border-radius: 12px;
-            border: 1px solid var(--border-color); background-color: #0a0a14;
-            color: var(--text-primary); font-size: 16px; letter-spacing: 1px; transition: all 0.3s ease;
-        }
-        #tokenInput:focus {
-            outline: none; border-color: var(--gradient-end);
-            box-shadow: 0 0 20px rgba(0, 198, 251, 0.2);
-        }
-        .paste-btn {
-            position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
-            background: none; border: none; color: var(--text-secondary);
-            font-size: 18px; cursor: pointer; padding: 8px; border-radius: 8px;
-            transition: color 0.3s, background-color 0.3s;
-        }
+        #tokenInput { width: 100%; padding: 18px 55px 18px 55px; border-radius: 12px; border: 1px solid var(--border-color);
+            background-color: #0a0a14; color: var(--text-primary); font-size: 16px; letter-spacing: 1px; transition: all 0.3s ease; }
+        #tokenInput:focus { outline: none; border-color: var(--gradient-end); box-shadow: 0 0 20px rgba(0, 198, 251, 0.2); }
+        .paste-btn { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none;
+            color: var(--text-secondary); font-size: 18px; cursor: pointer; padding: 8px; border-radius: 8px; transition: color 0.3s, background-color 0.3s; }
         .paste-btn:hover { color: var(--text-primary); background-color: rgba(255, 255, 255, 0.1); }
-        
         .char-counter { text-align: right; font-size: 12px; color: var(--text-secondary); margin-bottom: 25px; height: 15px; }
-
-        .btn {
-            width: 100%; padding: 16px; border: none; border-radius: 12px; font-size: 16px;
-            font-weight: 600; cursor: pointer; display: flex; justify-content: center;
-            align-items: center; gap: 10px; text-decoration: none; position: relative; overflow: hidden;
-            transition: transform 0.2s ease, box-shadow 0.3s ease;
-        }
+        .btn { width: 100%; padding: 16px; border: none; border-radius: 12px; font-size: 16px; font-weight: 600; cursor: pointer;
+            display: flex; justify-content: center; align-items: center; gap: 10px; text-decoration: none; position: relative; overflow: hidden;
+            transition: transform 0.2s ease, box-shadow 0.3s ease; }
         .btn::before { content: ''; position: absolute; top: 0; left: -100%; width: 75%; height: 100%;
-            background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-            transition: left 0.7s ease-in-out;
-        }
+            background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.4), transparent); transition: left 0.7s ease-in-out; }
         .btn:hover::before { left: 125%; }
         .btn:hover { transform: translateY(-3px); }
-        .btn-primary {
-            background-image: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
-            color: white; margin-bottom: 15px; box-shadow: 0 5px 25px rgba(138, 43, 226, 0.3);
-        }
+        .btn-primary { background-image: linear-gradient(90deg, var(--gradient-start), var(--gradient-end)); color: white; margin-bottom: 15px;
+            box-shadow: 0 5px 25px rgba(138, 43, 226, 0.3); }
         .btn-secondary { background-color: transparent; color: var(--text-primary); border: 1px solid var(--border-color); }
-        
-        .message-box {
-            margin-top: 25px; font-weight: 500; min-height: 20px; padding: 12px;
-            border-radius: 8px; display: none; text-align: left;
-        }
+        .message-box { margin-top: 25px; font-weight: 500; min-height: 20px; padding: 12px; border-radius: 8px; display: none; text-align: left; }
         .message-box.show { display: flex; align-items: center; gap: 10px; animation: slideDown 0.5s ease; }
         @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
         .message-box.success { color: var(--success-text); background-color: var(--success-bg); border-left: 4px solid var(--success-text); }
         .message-box.error { color: var(--error-text); background-color: var(--error-bg); border-left: 4px solid var(--error-text); }
-        
-        .scroll-down-indicator {
-            position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
-            color: var(--text-secondary); animation: bounce 2s infinite;
-        }
+        .scroll-down-indicator { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); color: var(--text-secondary);
+            animation: bounce 2s infinite; }
         @keyframes bounce { 0%, 20%, 50%, 80%, 100% { transform: translate(-50%, 0); } 40% { transform: translate(-50%, -15px); } 60% { transform: translate(-50%, -7px); } }
-
-        /* --- HOW-IT-WORKS SECTION --- */
         .info-section { align-items: flex-start; padding-top: 100px; }
         .info-section h2 { font-size: 2.5rem; text-align: center; margin-bottom: 50px; }
         .steps-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; }
-        .step-card {
-            background-color: var(--card-bg-color); border: 1px solid var(--border-color);
-            padding: 30px; border-radius: 20px; width: 300px;
-        }
-        .step-card .step-icon {
-            font-size: 30px; margin-bottom: 15px;
-            background-image: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-        }
+        .step-card { background-color: var(--card-bg-color); border: 1px solid var(--border-color); padding: 30px; border-radius: 20px; width: 300px; }
+        .step-card .step-icon { font-size: 30px; margin-bottom: 15px; background-image: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .step-card h3 { font-size: 1.5rem; margin-bottom: 10px; }
         .step-card p { color: var(--text-secondary); }
     </style>
 </head>
 <body>
 
-    <div class="page-container">
-        <!-- SECTION 1: VERIFICATION -->
+    <!-- LOADER (Sabse pehle dikhega) -->
+    <div id="loaderContainer" class="loader-container">
+        <i class="fa-solid fa-spinner loader-icon"></i>
+        <p>Checking your access status...</p>
+    </div>
+
+    <!-- MAIN CONTENT (By default chhupa hua hai) -->
+    <div class="page-container" style="visibility: hidden; opacity: 0;">
         <section class="page-section">
             <div class="auth-container hidden">
                 <div class="header">
                     <h1 class="title">Skillneast Access</h1>
                     <p>Enter your token to unlock premium content.</p>
                 </div>
-
                 <div class="input-group">
                     <i class="fa-solid fa-key icon"></i>
                     <input type="text" id="tokenInput" placeholder="Enter Your Access Token">
@@ -154,17 +113,14 @@
                     </button>
                 </div>
                 <p class="char-counter"><span id="charCount">0</span> characters</p>
-
                 <button class="btn btn-primary" id="verifyBtn">
                     <i class="fa-solid fa-shield-halved"></i>
                     <span>Verify & Unlock</span>
                 </button>
-
                 <a href="#" id="botLink" class="btn btn-secondary" target="_blank">
                     <i class="fa-brands fa-telegram"></i>
                     <span>Get New Token</span>
                 </a>
-
                 <div id="messageBox" class="message-box"></div>
             </div>
             <div class="scroll-down-indicator">
@@ -172,7 +128,6 @@
             </div>
         </section>
 
-        <!-- SECTION 2: HOW IT WORKS -->
         <section class="page-section info-section">
             <div class="info-content">
                 <h2 class="hidden">How It Works</h2>
@@ -205,32 +160,25 @@
         // ========================================================================
         //                     CONFIGURATION (YAHAN BADLAAV KAREIN)
         // ========================================================================
-
-        // ▼▼▼ APNA FIREBASE CONFIG YAHAN PASTE KAREIN ▼▼▼
         const firebaseConfig = {
-            apiKey: "AIzaSyChwpbFb6M4HtG6zwjg0AXh7Lz9KjnrGZk",
-            authDomain: "adminneast.firebaseapp.com",
-            databaseURL: "https://adminneast-default-rtdb.firebaseio.com",
-            projectId: "adminneast",
-            storageBucket: "adminneast.firebasestorage.app",
-            messagingSenderId: "883877553418",
-            appId: "1:883877553418:web:84ce8200f4b471bfffc6f3",
-            measurementId: "G-PCH99BDF1S"
+            apiKey: "AIzaSyChwpbFb6M4HtG6zwjg0AXh7Lz9KjnrGZk", authDomain: "adminneast.firebaseapp.com",
+            databaseURL: "https://adminneast-default-rtdb.firebaseio.com", projectId: "adminneast",
+            storageBucket: "adminneast.firebasestorage.app", messagingSenderId: "883877553418",
+            appId: "1:883877553418:web:84ce8200f4b471bfffc6f3", measurementId: "G-PCH99BDF1S"
         };
-        // ▲▲▲ APNA FIREBASE CONFIG YAHAN PASTE KAREIN ▲▲▲
-
         const BOT_LINK = "https://t.me/Skillneastverifybot?start=true";
-        const REDIRECT_URL = "https://skillneastauth.vercel.app/"; // <-- Apna final destination link yahan daalein!
+        const REDIRECT_URL = "https://skillneastauth.vercel.app/";
         
         // ========================================================================
-        //               MAIN JAVASCRIPT LOGIC (ISKO NA BADLEIN)
+        //               MAIN JAVASCRIPT LOGIC (UPDATE KIYA GAYA)
         // ========================================================================
-
-        // --- Initialize Firebase ---
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
         // --- DOM Elements ---
+        const loaderContainer = document.getElementById('loaderContainer');
+        const pageContainer = document.querySelector('.page-container');
+        // ... baaki saare elements
         const tokenInput = document.getElementById('tokenInput');
         const verifyBtn = document.getElementById('verifyBtn');
         const pasteBtn = document.getElementById('pasteBtn');
@@ -239,21 +187,34 @@
         const botLink = document.getElementById('botLink');
         botLink.href = BOT_LINK;
 
+        // --- MASTER INITIALIZATION LOGIC ---
+        document.addEventListener('DOMContentLoaded', () => {
+            if (localStorage.getItem('skillneast_verified') === 'true') {
+                window.location.href = REDIRECT_URL;
+            } else {
+                // Thodi der baad loader ko hide karke login page dikhayein
+                setTimeout(() => {
+                    loaderContainer.classList.add('hidden-loader');
+                    pageContainer.style.visibility = 'visible';
+                    pageContainer.style.opacity = '1';
+                    // Scroll animations ko activate karein
+                    initializeScrollAnimations();
+                }, 500); // 0.5 second ka delay
+            }
+        });
+
         // --- Event Listeners ---
         verifyBtn.addEventListener('click', verifyToken);
         tokenInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') verifyToken(); });
         tokenInput.addEventListener('input', () => { charCount.textContent = tokenInput.value.length; });
-        
-        // --- NAYA WORKING PASTE BUTTON LOGIC ---
         pasteBtn.addEventListener('click', async () => {
             try {
                 const text = await navigator.clipboard.readText();
                 tokenInput.value = text;
-                // Manually trigger input event for the counter to update
                 tokenInput.dispatchEvent(new Event('input', { bubbles: true })); 
             } catch (err) {
                 console.error('Failed to read clipboard contents: ', err);
-                showMessage("Clipboard access denied. Please paste manually (Ctrl+V).", "error", "fa-ban");
+                showMessage("Clipboard access denied. Please paste manually.", "error", "fa-ban");
             }
         });
 
@@ -276,9 +237,10 @@
                         showMessage("This token has expired. Please get a new one.", "error", "fa-clock-rotate-left");
                         resetButton();
                     } else {
-                        showMessage("Verification Successful! Unlocking content...", "success", "fa-circle-check");
+                        showMessage("Verification Successful! Redirecting...", "success", "fa-circle-check");
+                        localStorage.setItem('skillneast_verified', 'true');
                         tokenRef.update({ used: true });
-                        setTimeout(() => { window.location.href = REDIRECT_URL; }, 2000);
+                        setTimeout(() => { window.location.href = REDIRECT_URL; }, 1500);
                     }
                 } else {
                     showMessage("Invalid Token. Please check and try again.", "error", "fa-question-circle");
@@ -302,17 +264,19 @@
         }
 
         // --- Scroll Animation Logic ---
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.1 });
+        function initializeScrollAnimations() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
 
-        const hiddenElements = document.querySelectorAll('.hidden');
-        hiddenElements.forEach((el) => observer.observe(el));
+            const hiddenElements = document.querySelectorAll('.hidden');
+            hiddenElements.forEach((el) => observer.observe(el));
+        }
     </script>
 </body>
 </html>
